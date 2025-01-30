@@ -8,6 +8,7 @@ public class BoardManager : MonoBehaviour
     public class CellData
     {
         public bool Passable;
+        public GameObject ContainedObject;
     }
 
     private CellData[,] m_BoardData;
@@ -18,7 +19,9 @@ public class BoardManager : MonoBehaviour
     public int Height;
     public Tile[] GroundTiles;
     public Tile[] WallTiles;
-    
+
+    public GameObject FoodPrefab;
+
     public void Init()
     {
         m_Tilemap = GetComponentInChildren<Tilemap>();
@@ -65,4 +68,22 @@ public class BoardManager : MonoBehaviour
 
         return m_BoardData[cellIndex.x, cellIndex.y];
     }
+
+    void GenerateFood()
+    {
+        int foodCount = 5;
+        for (int i = 0; i < foodCount; i++)
+        {
+            int randomX = Random.Range(1, Width - 1);
+            int randomY = Random.Range(1, Height - 1);
+            CellData data = m_BoardData[randomX, randomY];
+            if (data.Passable && data.ContainedObject == null)
+            {
+                GameObject newFood = Instantiate(FoodPrefab);
+                newFood.transform.position = CellToWorld(new Vector2Int(randomX, randomY));
+                data.ContainedObject = newFood;
+            }
+        }
+    }
+    
 }
