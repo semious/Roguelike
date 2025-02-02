@@ -7,8 +7,12 @@ public class CellObject : MonoBehaviour
     public virtual void Init(Vector2Int cell) {
         m_Cell = cell;
     }
-    
+
     public virtual void PlayerEntered() {
         
+    }
+
+    public virtual bool PlayerWantsToEnter() {
+        return true;
     }
 }
