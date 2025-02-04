@@ -24,10 +24,14 @@ public class GameManager : MonoBehaviour
         Instance = this;
     }
 
+    private int m_CurrentLevel = 1;
+
     void Start()
     {
         TurnManager = new TurnManager();
         TurnManager.OnTick += OnTurnHappen;
+
+        NewLevel();
 
         m_FoodLabel = UIDoc.rootVisualElement.Q<Label>("FoodLabel");
         m_FoodLabel.text = "Food : " + m_FoodAmount;
@@ -47,9 +51,11 @@ public class GameManager : MonoBehaviour
         m_FoodLabel.text = "Food : " + m_FoodAmount;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
+    public void NewLevel() {
+        BoardManager.Clean();
+        BoardManager.Init();
+        PlayerController.Spawn(BoardManager, new Vector2Int(1,1));
 
+        m_CurrentLevel++;
     }
 }
